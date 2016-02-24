@@ -25,7 +25,7 @@ describe Mojio do
 
       it "gets an error" do
         response = Mojio.login
-        puts response
+        # puts response
 
         expect(response['error']).not_to be_empty
         # expect(draw).to be_a(Array)
@@ -43,14 +43,18 @@ describe Mojio do
           config.username = @valid_username
           config.password = @valid_password
         end
+        @token = Mojio.login
       end
 
       it "gets a token" do
-        token = Mojio.login
+        expect(@token['access_token']).to match(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/)
+      end
 
-        expect(token['access_token']).to match(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/)
-        # expect(draw).to be_a(Array)
-        # expect(draw.size).to eq(10)
+      it "sets the session" do
+        expect(Mojio.session['access_token']).to match(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/)
+        expect(Mojio.session['token_type']).to eq("bearer")
+        expect(Mojio.session['expires_at']).to be >= DateTime.now
+        expect(Mojio.session['refresh_token']).to match(/[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}/)
       end
     end
   end
