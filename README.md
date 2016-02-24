@@ -1,6 +1,6 @@
 # Mojio
 
-TODO: Write a gem description
+This gem is in the VERY eary dev state and is entirely incomplete. Please do not implement at this time. 
 
 ## Installation
 
