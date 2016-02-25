@@ -1,6 +1,7 @@
 require "mojio/version"
 require "mojio/configuration"
 require "mojio/session"
+require "mojio/vehicles"
 require 'httparty'
 require 'active_support'
 require 'active_support/all'
@@ -20,19 +21,16 @@ module Mojio
   end
 
   def self.get_token
-    if @session == nil 
-      return self.login
-    end
-    if @session['expires_at'] < DateTime.now + 30.minutes
-      if (response = self.extend_token['error'])
-        puts "Error extending token #{response.inspect}"
-      end
-    elsif @session['access_token'].empty? || @session['expires_at'] < DateTime.now
+    if @session == nil || @session['access_token'].empty? || @session['expires_at'] < DateTime.now
       if (response = self.login)['error']
         puts "Error occured logging in #{response.inspect}"
         return nil
       else
         puts "loging success new token set"
+      end
+    elsif @session['expires_at'] < DateTime.now + 30.minutes
+      if (response = self.extend_token['error'])
+        puts "Error extending token #{response.inspect}"
       end
     end
     return @session['access_token']
@@ -49,7 +47,7 @@ module Mojio
     }
     response = HTTParty.post( url, { headers: headers, query: options} )
     @session['expires_at'] = DateTime.parse(response["ValidUntil"])
-    puts "Response: #{response}"
+    # puts "Response: #{response}"
     return response
   end
 
@@ -64,7 +62,7 @@ module Mojio
       client_secret: configuration.app_secret,
       grant_type: "password"
     }
-    # puts options.inspect
+    puts options.inspect
     url = "https://#{configuration.api_host}:#{configuration.api_port}/OAuth2/token"
     # puts url
     response = HTTParty.post( url, { headers: headers, body: options} )
@@ -77,10 +75,5 @@ module Mojio
       # puts @session['access_token']
       return response
     end
-  end
-  def self.get_vehicles
-  end
-
-  def self.get_location(vehicle_id)
   end
 end
