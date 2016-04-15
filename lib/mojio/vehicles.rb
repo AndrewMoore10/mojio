@@ -1,6 +1,6 @@
 module Mojio
   def self.get_vehicles
-    puts self.get_token
+    # puts self.get_token
     url = "https://#{configuration.api_host}:#{configuration.api_port}/v1/vehicles"
     headers = {
       "Content-Type" => "application/json",
