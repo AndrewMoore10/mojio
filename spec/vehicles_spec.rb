@@ -22,7 +22,9 @@ module Mojio
 
     describe "vehicle" do
       before do
-        @v_id = "55dd6847-5d0b-4602-9905-4105ab9ce98e"
+        # @v_id = Mojio.get_vehicles"28c0ba8a-6828-4798-bf5d-7ebacd223865"
+        @v_id = Mojio.get_vehicles["Data"].first["_id"]
+        @bad_v_id = "bad0ba8a-6828-4798-bf5d-7ebacd223865"
       end
       it "returns a vehicle's general information" do
         expect(Mojio.get_vehicle(@v_id) ).not_to eq(nil)

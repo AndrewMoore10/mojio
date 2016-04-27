@@ -12,7 +12,7 @@ module Mojio
       sortBy: "Name"
     }
     response = HTTParty.get( url, { headers: headers, query: options} )
-    # puts response.to_yaml
+    # puts response["Data"].first["_id"]
     return response
   end
 

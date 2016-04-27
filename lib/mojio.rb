@@ -28,7 +28,8 @@ module Mojio
       else
         puts "loging success new token set"
       end
-    elsif @session['expires_at'] < DateTime.now + 30.minutes
+    elsif @session['expires_at'] < DateTime.now + 1.day
+      puts "extending token expiration"
       if (response = self.extend_token['error'])
         puts "Error extending token #{response.inspect}"
       end
@@ -47,7 +48,7 @@ module Mojio
     }
     response = HTTParty.post( url, { headers: headers, query: options} )
     @session['expires_at'] = DateTime.parse(response["ValidUntil"])
-    # puts "Response: #{response}"
+    puts "Response: #{response}"
     return response
   end
 
@@ -62,7 +63,7 @@ module Mojio
       client_secret: configuration.app_secret,
       grant_type: "password"
     }
-    puts options.inspect
+    # puts options.inspect
     url = "https://#{configuration.api_host}:#{configuration.api_port}/OAuth2/token"
     # puts url
     response = HTTParty.post( url, { headers: headers, body: options} )
