@@ -35,12 +35,12 @@ module Mojio
         token = Mojio.get_token
         expect(Mojio.session['expires_at']).to be >= DateTime.now
       end
-      it "should refresh a soon to expire token" do
+      it "should extend a soon to expire token" do
         Mojio.session['expires_at'] = DateTime.now + 15.minutes
-        # puts Mojio.session['expires_at']
+        puts Mojio.session['expires_at']
         token = Mojio.get_token
         expect(Mojio.session['expires_at']).to be >= DateTime.now + 30.minutes
-        # puts Mojio.session['expires_at']
+        puts Mojio.session['expires_at']
       end
     end
   end

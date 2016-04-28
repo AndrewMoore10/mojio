@@ -21,19 +21,19 @@ module Mojio
   end
 
   def self.get_token
-    if @session == nil || @session['access_token'].empty? || @session['expires_at'] < DateTime.now
+    if @session == nil || @session['access_token'].empty? || @session['expires_at'] < DateTime.now || @session['expires_at'] < DateTime.now + 30.minutes
       if (response = self.login)['error']
         puts "Error occured logging in #{response.inspect}"
         return nil
       else
-        puts "loging success new token set"
-      end
-    elsif @session['expires_at'] < DateTime.now + 1.day
-      puts "extending token expiration"
-      if (response = self.extend_token['error'])
-        puts "Error extending token #{response.inspect}"
+        puts "login success new token set"
       end
     end
+    # elsif @session['expires_at'] < DateTime.now + 30.minutes
+    #   if (response = self.extend_token['error'])
+    #     puts "Error extending token #{response.inspect}"
+    #   end
+    # end
     return @session['access_token']
   end
 
@@ -48,7 +48,7 @@ module Mojio
     }
     response = HTTParty.post( url, { headers: headers, query: options} )
     @session['expires_at'] = DateTime.parse(response["ValidUntil"])
-    puts "Response: #{response}"
+    # puts "Response: #{response}"
     return response
   end
 
