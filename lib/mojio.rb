@@ -23,12 +23,12 @@ module Mojio
   def self.get_token
     # puts "#{@session}"
     if @session == nil || @session['access_token'].empty? || @session['expires_at'].to_i < DateTime.now.to_i || @session['expires_at'].to_i < DateTime.now.to_i + 3.hours
-      puts "\nE:#{@session['expires_at']} \nN:#{DateTime.now}"
+      # puts "\nE:#{@session['expires_at']} \nN:#{DateTime.now}"
       if (response = self.login)['error']
         puts "Error occured logging in #{response.inspect}"
         return nil
       else
-        puts "login success new token set. Expires at #{@session['expires_at']}"
+        puts "login success new token set."
       end
     end
     # elsif @session['expires_at'] < DateTime.now + 30.minutes
