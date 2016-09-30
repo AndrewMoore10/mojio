@@ -23,5 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   # spec.add_development_dependency "httparty"
   spec.add_dependency "httparty"
-  spec.add_dependency 'activesupport'
+  spec.add_dependency 'activesupport', "4.1.0"
 end

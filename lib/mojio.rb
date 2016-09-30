@@ -11,7 +11,7 @@ module Mojio
     attr_accessor :configuration
     attr_accessor :session
   end
-  
+
   def self.configuration
     @configuration ||= Configuration.new
   end
@@ -21,12 +21,14 @@ module Mojio
   end
 
   def self.get_token
-    if @session == nil || @session['access_token'].empty? || @session['expires_at'] < DateTime.now || @session['expires_at'] < DateTime.now + 30.minutes
+    puts "\nE:#{@session['expires_at']} \nN:#{DateTime.now}"
+    # puts "#{@session}"
+    if @session == nil || @session['access_token'].empty? || @session['expires_at'].to_i < DateTime.now.to_i || @session['expires_at'].to_i < DateTime.now.to_i + 3.hours
       if (response = self.login)['error']
         puts "Error occured logging in #{response.inspect}"
         return nil
       else
-        puts "login success new token set"
+        puts "login success new token set. Expires at #{@session['expires_at']}"
       end
     end
     # elsif @session['expires_at'] < DateTime.now + 30.minutes
@@ -72,7 +74,7 @@ module Mojio
       return response
     else
       @session = response;
-      @session['expires_at'] = DateTime.now + response['expires_in'].to_i.minutes;
+      @session['expires_at'] = DateTime.now + response['expires_in'].to_i.seconds;
       # puts @session['access_token']
       return response
     end

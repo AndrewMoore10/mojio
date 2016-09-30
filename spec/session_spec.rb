@@ -9,7 +9,7 @@ module Mojio
       before do
         Mojio.configure do |config|
           # config.api_host = "api.moj.io" #optional
-          # config.api_port = "" 
+          # config.api_port = ""
           config.app_id = @valid_id
           config.app_secret = @valid_secret
           config.username = @valid_username
@@ -36,6 +36,7 @@ module Mojio
         expect(Mojio.session['expires_at']).to be >= DateTime.now
       end
       it "should extend a soon to expire token" do
+        puts "extending session\n\n\n"
         Mojio.session['expires_at'] = DateTime.now + 15.minutes
         puts Mojio.session['expires_at']
         token = Mojio.get_token
