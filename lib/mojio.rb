@@ -21,9 +21,9 @@ module Mojio
   end
 
   def self.get_token
-    puts "\nE:#{@session['expires_at']} \nN:#{DateTime.now}"
     # puts "#{@session}"
     if @session == nil || @session['access_token'].empty? || @session['expires_at'].to_i < DateTime.now.to_i || @session['expires_at'].to_i < DateTime.now.to_i + 3.hours
+      puts "\nE:#{@session['expires_at']} \nN:#{DateTime.now}"
       if (response = self.login)['error']
         puts "Error occured logging in #{response.inspect}"
         return nil
